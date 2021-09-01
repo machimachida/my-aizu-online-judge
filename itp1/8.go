@@ -8,7 +8,30 @@ import (
 	"strings"
 )
 
-func TogglingCases() { // TODO AOJの動作環境が古いため、strings.Builderが使えない
+func TogglingCases() {
+	scanner := bufio.NewScanner(os.Stdin)
+	if !scanner.Scan() {
+		fmt.Println("invalid input")
+		return
+	}
+	str := scanner.Text()
+	if len(str) >= 1200 {
+		fmt.Println("invalid length of the input string")
+		return
+	}
+
+	for _, c := range str {
+		if c >= 'A' && c <= 'Z' {
+			c += 'a' - 'A'
+		} else if c >= 'a' && c <= 'z' {
+			c -= 'a' - 'A'
+		}
+		fmt.Print(string(c))
+	}
+	fmt.Print("\n")
+}
+
+func TogglingCasesWithStringsBuilder() { // TODO AOJの動作環境が古いため、strings.Builderが使えない
 	scanner := bufio.NewScanner(os.Stdin)
 	if !scanner.Scan() {
 		fmt.Println("invalid input")
