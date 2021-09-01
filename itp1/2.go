@@ -1,147 +1,96 @@
 package itp1
 
 import (
-	"errors"
+	"fmt"
 	"sort"
-	"strconv"
-	"strings"
 )
 
-func SmallLargeEqual(s string) (string, error) {
-	ss := strings.Split(s, " ")
-	if len(ss) != 2 {
-		return "", errors.New("invalid input")
+func SmallLargeEqual() {
+	ab := make([]int, 2)
+	_, err := fmt.Scan(&ab[0], &ab[1])
+	if err != nil {
+		fmt.Println(err)
+		return
 	}
-	is := make([]int, 2)
-	for i, s := range ss {
-		n, err := strconv.Atoi(s)
-		if err != nil {
-			return "", err
+	for i := range ab {
+		if ab[i] < -1000 || ab[i] > 1000 {
+			fmt.Println("invalid a or b range")
+			return
 		}
-		if n < -1000 || n > 1000 {
-			var v string
-			if i == 0 {
-				v = "a"
-			} else {
-				v = "b"
-			}
-			return "", errors.New(v + " is not match -1000 <= " + v + " <= 1000. " + v + " = " + strconv.Itoa(n))
-		}
-		is[i] = n
 	}
 
-	if is[0] < is[1] {
-		return "a < b", nil
-	} else if is[0] > is[1] {
-		return "a > b", nil
+	if ab[0] < ab[1] {
+		fmt.Println("a < b")
+	} else if ab[0] > ab[1] {
+		fmt.Println("a > b")
 	} else {
-		return "a == b", nil
+		fmt.Println("a == b")
 	}
 }
 
-func Range(s string) (string, error) {
-	ss := strings.Split(s, " ")
-	if len(ss) != 3 {
-		return "", errors.New("invalid input")
-	}
-	is := make([]int, 3)
-	for i, s := range ss {
-		n, err := strconv.Atoi(s)
-		if err != nil {
-			return "", err
-		}
-		if n < 0 || n > 100 {
-			var v string
-			if i == 0 {
-				v = "a"
-			} else if i == 1 {
-				v = "b"
-			} else {
-				v = "c"
-			}
-			return "", errors.New(v + " is not match 0 <= " + v + " <= 100. " + v + " = " + strconv.Itoa(n))
-		}
-		is[i] = n
+func Range() {
+	abc := make([]int, 3)
+	_, err := fmt.Scan(&abc[0], &abc[1], &abc[2])
+	if err != nil {
+		fmt.Println(err)
+		return
 	}
 
-	if is[0] < is[1] && is[1] < is[2] {
-		return "Yes", nil
+	for i := range abc {
+		if abc[i] < 0 || abc[i] > 100 {
+			fmt.Println("invalid a or b or c range")
+		}
+	}
+
+	if abc[0] < abc[1] && abc[1] < abc[2] {
+		fmt.Println("Yes")
 	} else {
-		return "No", nil
+		fmt.Println("No")
 	}
 }
 
-func SortingThreeNumbers(s string) (string, error) {
-	ss := strings.Split(s, " ")
-	if len(ss) != 3 {
-		return "", errors.New("invalid input")
-	}
+func SortingThreeNumbers() {
 	is := make([]int, 3)
-	for i, s := range ss {
-		n, err := strconv.Atoi(s)
-		if err != nil {
-			return "", err
+	_, err := fmt.Scan(&is[0], &is[1], &is[2])
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	for i := range is {
+		if is[i] < 1 || is[i] > 10000 {
+			fmt.Println("invalid integer range")
 		}
-		if n < 0 || n > 100 {
-			var v string
-			if i == 0 {
-				v = "a"
-			} else if i == 1 {
-				v = "b"
-			} else {
-				v = "c"
-			}
-			return "", errors.New(v + " is not match 0 <= " + v + " <= 100. " + v + " = " + strconv.Itoa(n))
-		}
-		is[i] = n
 	}
 	sort.Ints(is)
-	return strconv.Itoa(is[0]) + " " + strconv.Itoa(is[1]) + " " + strconv.Itoa(is[2]), nil
+	fmt.Printf("%d %d %d\n", is[0], is[1], is[2])
 }
 
-func CircleInARectangle(s string) (string, error) {
-	ss := strings.Split(s, " ")
-	if len(ss) != 5 {
-		return "", errors.New("invalid input")
-	}
+func CircleInARectangle() {
 	is := make([]int, 5)
-	for i, s := range ss {
-		n, err := strconv.Atoi(s)
-		if err != nil {
-			return "", err
-		}
-		if i == 1 || i == 2 {
-			if n < -100 || n > 100 {
-				var v string
-				if i == 1 {
-					v = "x"
-				} else {
-					v = "y"
-				}
-				return "", errors.New(v + " is not match -100 <= " + v + " <= 100. " + v + " = " + strconv.Itoa(n))
+	_, err := fmt.Scan(&is[0], &is[1], &is[2], &is[3], &is[4])
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	for i := range is {
+		if i == 2 || i == 3 {
+			if is[i] < -100 || is[i] > 100 {
+				fmt.Println("invalid x or y range")
 			}
 		} else {
-			if n <= 0 || n > 100 {
-				var v string
-				if i == 0 {
-					v = "W"
-				} else if i == 1 {
-					v = "H"
-				} else {
-					v = "r"
-				}
-				return "", errors.New(v + " is not match 0 < " + v + " <= 100. " + v + " = " + strconv.Itoa(n))
+			if is[i] <= 0 || is[i] > 100 {
+				fmt.Println("invalid W or H or r range")
 			}
 		}
-		is[i] = n
 	}
 
-	if is[2]-is[4] < 0 ||
-		is[3]-is[4] < 0 ||
-		is[2]+is[4] > is[0] ||
-		is[3]+is[4] > is[1] {
-		return "No", nil
+	if is[2]-is[4] >= 0 &&
+		is[3]-is[4] >= 0 &&
+		is[2]+is[4] <= is[0] &&
+		is[3]+is[4] <= is[1] {
+		fmt.Println("Yes")
 	} else {
-		return "Yes", nil
+		fmt.Println("No")
 	}
 }

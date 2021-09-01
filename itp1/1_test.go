@@ -1,43 +1,39 @@
 package itp1
 
 import (
-	"testing"
+	"aizu/support"
+	"fmt"
 )
 
-func TestHelloWorld(t *testing.T) {
+func ExampleHelloWorld() {
+	HelloWorld()
+	// Output: Hello World
 }
 
-func TestXCubic(t *testing.T) {
-	samples := [][]string{{"2", "8"}, {"3", "27"}}
+func ExampleXCubic() {
+	samples := []string{"2", "3"}
 	for _, s := range samples {
-		result, err := XCubic(s[0])
+		err := support.Stdin(XCubic, s)
 		if err != nil {
-			t.Fatalf("failed: %#v", err)
-		}
-		if result != s[1] {
-			t.Fatalf("wrong result: %s", result)
+			fmt.Printf("failed: %#v\n", err)
 		}
 	}
+	// Output: 8
+	// 27
 }
 
-func TestRectangle(t *testing.T) {
-	sample := []string{"3 5", "15 16"}
-	result, err := Rectangle(sample[0])
+func ExampleRectangle() {
+	err := support.Stdin(Rectangle, "3 5")
 	if err != nil {
-		t.Fatalf("failed: %#v", err)
+		fmt.Printf("failed: %#v\n", err)
 	}
-	if result != sample[1] {
-		t.Fatalf("wrong result: %s", result)
-	}
+	// Output: 15 16
 }
 
-func TestWatch(t *testing.T) {
-	samples := []string{"46979", "13:2:59"}
-	result, err := Watch(samples[0])
+func ExampleWatch() {
+	err := support.Stdin(Watch, "46979")
 	if err != nil {
-		t.Fatalf("failed: %#v", err)
+		fmt.Printf("failed: %#v\n", err)
 	}
-	if result != samples[1] {
-		t.Fatalf("wrong result: %s", result)
-	}
+	// Output: 13:2:59
 }

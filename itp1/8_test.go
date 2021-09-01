@@ -1,63 +1,69 @@
 package itp1
 
 import (
-	"testing"
+	"aizu/support"
+	"fmt"
 )
 
-func TestTogglingCases(t *testing.T) {
-	s := []string{
-		"fAIR, LATER, OCCASIONALLY CLOUDY.",
-		"Fair, later, occasionally cloudy.",
-	}
-	res, err := TogglingCases(s[0])
+func ExampleTogglingCases() {
+	err := support.Stdin(TogglingCases, "fAIR, LATER, OCCASIONALLY CLOUDY.")
 	if err != nil {
-		t.Fatalf("failed: %#v", err)
+		fmt.Printf("failed: %#v\n", err)
 	}
-	if res != s[1] {
-		t.Fatalf("ans: %s\nresult: %s", s[1], res)
-	}
+	// Output: Fair, later, occasionally cloudy.
 }
 
-func TestSumOfNumbers(t *testing.T) {
-	s := []string{
-		"123\n55\n1000\n0",
-		"6\n10\n1",
-	}
-	res, err := SumOfNumbers(s[0])
+func ExampleSumOfNumbers() {
+	err := support.Stdin(SumOfNumbers, "123\n55\n1000\n0")
 	if err != nil {
-		t.Fatalf("failed: %#v", err)
+		fmt.Printf("failed: %#v\n", err)
 	}
-	if res != s[1] {
-		t.Fatalf("ans: %s\nresult: %s", s[1], res)
-	}
+	// Output: 6
+	// 10
+	// 1
 }
 
-func TestCountingCharacters(t *testing.T) {
-	s := []string{
-		"This is a pen.",
-		"a : 1\nb : 0\nc : 0\nd : 0\ne : 1\nf : 0\ng : 0\nh : 1\ni : 2\nj : 0\nk : 0\nl : 0\nm : 0\nn : 1\no : 0\np : 1\nq : 0\nr : 0\ns : 2\nt : 1\nu : 0\nv : 0\nw : 0\nx : 0\ny : 0\nz : 0",
-	}
-	res, err := CountingCharacters(s[0])
+func ExampleCountingCharacters() {
+	err := support.Stdin(CountingCharacters, "This is a pen.")
 	if err != nil {
-		t.Fatalf("failed: %#v", err)
+		fmt.Printf("failed: %#v\n", err)
 	}
-	if res != s[1] {
-		t.Fatalf("ans: %s\nresult: %s", s[1], res)
-	}
+	// Output: a : 1
+	// b : 0
+	// c : 0
+	// d : 0
+	// e : 1
+	// f : 0
+	// g : 0
+	// h : 1
+	// i : 2
+	// j : 0
+	// k : 0
+	// l : 0
+	// m : 0
+	// n : 1
+	// o : 0
+	// p : 1
+	// q : 0
+	// r : 0
+	// s : 2
+	// t : 1
+	// u : 0
+	// v : 0
+	// w : 0
+	// x : 0
+	// y : 0
+	// z : 0
 }
 
-func TestRing(t *testing.T) {
-	samples := [][]string{
-		{"vanceknowledgetoad\nadvance", "Yes"},
-		{"vanceknowledgetoad\nadvanced", "No"},
-	}
+func ExampleRing() {
+	samples := []string{"vanceknowledgetoad\nadvance", "vanceknowledgetoad\nadvanced"}
 	for _, s := range samples {
-		res, err := Ring(s[0])
+		err := support.Stdin(Ring, s)
 		if err != nil {
-			t.Fatalf("failed: %#v", err)
-		}
-		if res != s[1] {
-			t.Fatalf("ans: %s\nresult: %s", s[1], res)
+			fmt.Printf("failed: %#v\n", err)
 		}
 	}
+	// Output: Yes
+	// No
 }

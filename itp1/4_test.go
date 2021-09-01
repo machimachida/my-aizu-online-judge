@@ -1,57 +1,46 @@
 package itp1
 
 import (
-	"testing"
+	"aizu/support"
+	"fmt"
 )
 
-func TestABProblem(t *testing.T) {
-	s := []string{"3 2", "1 1 1.50000"}
-	res, err := ABProblem(s[0])
+func ExampleABProblem() {
+	err := support.Stdin(ABProblem, "3 2")
 	if err != nil {
-		t.Fatalf("failed: %#v", err)
+		fmt.Printf("failed: %#v\n", err)
 	}
-	if res != s[1] {
-		t.Fatalf("wrong result: %s", res)
-	}
+	// Output: 1 1 1.50000
 }
 
-func TestCircle(t *testing.T) {
-	samples := [][]string{{"2", "12.566371 12.566371"}, {"3", "28.274334 18.849556"}}
+func ExampleCircle() {
+	samples := []string{"2", "3"}
 	for _, s := range samples {
-		res, err := Circle(s[0])
+		err := support.Stdin(Circle, s)
 		if err != nil {
-			t.Fatalf("failed: %#v", err)
-		}
-		if res != s[1] {
-			t.Fatalf("wrong result: %s", res)
+			fmt.Printf("failed: %#v\n", err)
 		}
 	}
+	// Output: 12.566371 12.566371
+	// 28.274334 18.849556
 }
 
-func TestSimpleCalculator(t *testing.T) {
-	s := []string{
-		"1 + 2\n56 - 18\n13 * 2\n100 / 10\n27 + 81\n0 ? 0",
-		"3\n38\n26\n10\n108",
-	}
-	res, err := SimpleCalculator(s[0])
+func ExampleSimpleCalculator() {
+	err := support.Stdin(SimpleCalculator, "1 + 2\n56 - 18\n13 * 2\n100 / 10\n27 + 81\n0 ? 0")
 	if err != nil {
-		t.Fatalf("failed: %#v", err)
+		fmt.Printf("failed: %#v\n", err)
 	}
-	if res != s[1] {
-		t.Fatalf("wrong result: %s", res)
-	}
+	// Output: 3
+	// 38
+	// 26
+	// 10
+	// 108
 }
 
-func TestMinMaxAndSum(t *testing.T) {
-	s := []string{
-		"5\n10 1 5 4 17",
-		"1 17 37",
-	}
-	res, err := MinMaxAndSum(s[0])
+func ExampleMinMaxAndSum() {
+	err := support.Stdin(MinMaxAndSum, "5\n10 1 5 4 17")
 	if err != nil {
-		t.Fatalf("failed: %#v", err)
+		fmt.Printf("failed: %#v\n", err)
 	}
-	if res != s[1] {
-		t.Fatalf("wrong result: %s", res)
-	}
+	// Output: 1 17 37
 }

@@ -1,10 +1,7 @@
 package itp1
 
 import (
-	"errors"
 	"fmt"
-	"strconv"
-	"strings"
 )
 
 func PrintManyHelloWorld() {
@@ -13,115 +10,93 @@ func PrintManyHelloWorld() {
 	}
 }
 
-func PrintTestCases(str string) (string, error) {
-	ss := strings.Split(str, "\n")
-	l := len(ss)
-	if l > 1000 {
-		return "", errors.New("The number of datasets > 1000")
-	}
-
-	res := ""
-	for i, s := range ss {
-		if s == "0" {
-			res = res[:len(res)-1]
-			break
-		}
-
-		x, err := strconv.Atoi(s)
+func PrintTestCases() {
+	var x int
+	for i := 1; i <= 10000; i++ {
+		_, err := fmt.Scan(&x)
 		if err != nil {
-			return "", err
+			fmt.Println(err)
+			return
 		}
-
-		if x < 1 || x > 10000 {
-			return "", errors.New("x is not match 1 <= x <= 10000. x = " + strconv.Itoa(x))
-		}
-		res += "Case " + strconv.Itoa(i+1) + ": " + s + "\n"
-	}
-
-	return res, nil
-}
-
-func SwappingTwoNumbers(str string) (string, error) {
-	ss := strings.Split(str, "\n")
-	if len(ss) > 3000 {
-		return "", errors.New("The number of datasets > 3000")
-	}
-
-	res := ""
-	for _, s := range ss {
-		if s == "0 0" {
-			res = res[:len(res)-1]
-			break
-		}
-
-		ns := strings.Split(s, " ")
-		if len(ns) != 2 {
-			return "", errors.New("invalid input")
-		}
-
-		is := make([]int, 2)
-		for i, n := range ns {
-			x, err := strconv.Atoi(n)
-			if err != nil {
-				return "", err
-			}
-			if x < 0 || x > 10000 {
-				var v string
-				if i == 0 {
-					v = "x"
-				} else {
-					v = "y"
-				}
-				return "", errors.New(v + " is not match 0 <= " + v + " <= 10000. " + v + " = " + strconv.Itoa(x))
-			}
-			is[i] = x
-		}
-
-		if is[0] > is[1] {
-			ns[0], ns[1] = ns[1], ns[0]
-		}
-		res += ns[0] + " " + ns[1] + "\n"
-	}
-
-	return res, nil
-}
-
-func HowManyDivisors(str string) (string, error) {
-	ss := strings.Split(str, " ")
-	if len(ss) != 3 {
-		return "", errors.New("The number of datasets > 3000")
-	}
-
-	is := make([]int, 3)
-	for i, s := range ss {
-		x, err := strconv.Atoi(s)
-		if err != nil {
-			return "", err
+		if x == 0 {
+			return
 		}
 		if x < 1 || x > 10000 {
-			var v string
-			if i == 0 {
-				v = "a"
-			} else if i == 1 {
-				v = "b"
-			} else {
-				v = "c"
+			fmt.Println("invalid x range")
+			return
+		}
+		fmt.Printf("Case %d: %d\n", i, x)
+	}
+	// 終端記号"0"が10001行目に存在する可能性がある
+	_, err := fmt.Scan(&x)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	if x != 0 {
+		fmt.Println("invalid number of datasets")
+	}
+}
+
+func SwappingTwoNumbers() {
+	xy := make([]int, 2)
+	for i := 1; i <= 3000; i++ {
+		_, err := fmt.Scan(&xy[0], &xy[1])
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+		if xy[0] == 0 && xy[1] == 0 {
+			return
+		}
+		for j := range xy {
+			if xy[j] < 0 || xy[j] > 10000 {
+				fmt.Println("invalid x or y range")
+				return
 			}
-			return "", errors.New(v + " is not match 1 <= " + v + " <= 10000. " + v + " = " + s)
 		}
-		is[i] = x
+
+		if xy[0] > xy[1] {
+			xy[0], xy[1] = xy[1], xy[0]
+		}
+		fmt.Printf("%d %d\n", xy[0], xy[1])
+	}
+	// 終端記号"0 0"が10001行目に存在する可能性がある
+	_, err := fmt.Scan(&xy[0], &xy[1])
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	if xy[0] != 0 || xy[1] != 0 {
+		fmt.Println("invalid number of datasets")
+	}
+}
+
+func HowManyDivisors() {
+	abc := make([]int, 3)
+	_, err := fmt.Scan(&abc[0], &abc[1], &abc[2])
+	if err != nil {
+		fmt.Println(err)
+		return
 	}
 
-	if is[0] > is[1] {
-		return "", errors.New("Not match a <= b. a = " + ss[0] + " b = " + ss[1])
-	}
-
-	c := 0
-	for i := is[0]; i <= is[1]; i++ {
-		if is[2]%i == 0 {
-			c++
+	for i := range abc {
+		if abc[i] < 1 || abc[i] > 10000 {
+			fmt.Println("invalid a or b or c range")
+			return
 		}
 	}
 
-	return strconv.Itoa(c), nil
+	if abc[0] > abc[1] {
+		fmt.Println("a > b is invalid")
+		return
+	}
+
+	nd := 0
+	for i := abc[0]; i <= abc[1]; i++ {
+		if abc[2]%i == 0 {
+			nd++
+		}
+	}
+	fmt.Println(nd)
 }

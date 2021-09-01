@@ -1,47 +1,42 @@
 package itp1
 
 import (
-	"testing"
+	"aizu/support"
+	"fmt"
 )
 
-func TestPrintManyHelloWorld(t *testing.T) {
+func ExamplePrintManyHelloWorld() {
+	PrintManyHelloWorld() // TODO: write test code
+	// Output: Hello World
 }
 
-func TestPrintTestCases(t *testing.T) {
-	s := []string{
-		"3\n5\n11\n7\n8\n19\n0",
-		"Case 1: 3\nCase 2: 5\nCase 3: 11\nCase 4: 7\nCase 5: 8\nCase 6: 19",
-	}
-	res, err := PrintTestCases(s[0])
+func ExamplePrintTestCases() {
+	err := support.Stdin(PrintTestCases, "3\n5\n11\n7\n8\n19\n0")
 	if err != nil {
-		t.Fatalf("failed: %#v", err)
+		fmt.Printf("failed: %#v\n", err)
 	}
-	if res != s[1] {
-		t.Fatalf("wrong result: %s", res)
-	}
+	// Output: Case 1: 3
+	// Case 2: 5
+	// Case 3: 11
+	// Case 4: 7
+	// Case 5: 8
+	// Case 6: 19
 }
 
-func TestSwappingTwoNumbers(t *testing.T) {
-	s := []string{
-		"3 2\n2 2\n5 3\n0 0",
-		"2 3\n2 2\n3 5",
-	}
-	res, err := SwappingTwoNumbers(s[0])
+func ExampleSwappingTwoNumbers() {
+	err := support.Stdin(SwappingTwoNumbers, "3 2\n2 2\n5 3\n0 0")
 	if err != nil {
-		t.Fatalf("failed: %#v", err)
+		fmt.Printf("failed: %#v\n", err)
 	}
-	if res != s[1] {
-		t.Fatalf("wrong result: %s", res)
-	}
+	// Output: 2 3
+	// 2 2
+	// 3 5
 }
 
-func TestHowManyDivisors(t *testing.T) {
-	s := []string{"5 14 80", "3"}
-	res, err := HowManyDivisors(s[0])
+func ExampleHowManyDivisors() {
+	err := support.Stdin(HowManyDivisors, "5 14 80")
 	if err != nil {
-		t.Fatalf("failed: %#v", err)
+		fmt.Printf("failed: %#v\n", err)
 	}
-	if res != s[1] {
-		t.Fatalf("wrong result: %s", res)
-	}
+	// Output: 3
 }

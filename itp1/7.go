@@ -1,98 +1,74 @@
 package itp1
 
 import (
-	"errors"
-	"strconv"
-	"strings"
+	"fmt"
 )
 
-func Grading(str string) (string, error) {
-	ss := strings.Split(str, "\n")
-	if len(ss) > 50 {
-		return "", errors.New("too many lines")
-	}
-
-	res := ""
-	for _, s := range ss {
-		if s == "-1 -1 -1" {
-			break
-		}
-		ns := strings.Split(s, " ")
-		if len(ns) != 3 {
-			return "", errors.New("invalid number of scores")
-		}
-
-		m, err := strconv.Atoi(ns[0])
+func Grading() {
+	mfr := make([]int, 3)
+	for i := 0; i < 50; i++ {
+		_, err := fmt.Scan(&mfr[0], &mfr[1], &mfr[2])
 		if err != nil {
-			return "", err
+			fmt.Println(err)
+			return
 		}
-		if m < -1 || m > 50 {
-			return "", errors.New("invalid m")
-		}
-
-		f, err := strconv.Atoi(ns[1])
-		if err != nil {
-			return "", err
-		}
-		if f < -1 || f > 50 {
-			return "", errors.New("invalid f")
+		if mfr[0] == -1 && mfr[1] == -1 && mfr[2] == -1 {
+			return
 		}
 
-		switch t := m + f; {
-		case t >= 80:
-			res += "A\n"
-		case t >= 65 && t < 80:
-			res += "B\n"
-		case t >= 50 && t < 65:
-			res += "C\n"
-		case t >= 30 && t < 50:
-			r, err := strconv.Atoi(ns[2])
-			if err != nil {
-				return "", err
+		if mfr[0] == -1 || mfr[1] == -1 {
+			fmt.Println("F")
+		} else {
+			for j := range mfr[:1] {
+				if mfr[j] < -1 || mfr[j] > 50 {
+					fmt.Println("invalid m or f range")
+					return
+				}
 			}
-			if r < -1 || r > 100 {
-				return "", errors.New("invalid r")
-			} else if r >= 50 {
-				res += "C\n"
-			} else {
-				res += "D\n"
+			switch t := mfr[0] + mfr[1]; {
+			case t >= 80:
+				fmt.Println("A")
+			case t >= 65 && t < 80:
+				fmt.Println("B")
+			case t >= 50 && t < 65:
+				fmt.Println("C")
+			case t >= 30 && t < 50:
+				if mfr[2] < -1 || mfr[2] > 100 {
+					fmt.Println("invalid r range")
+				} else if mfr[2] >= 50 {
+					fmt.Println("C")
+				} else {
+					fmt.Println("D")
+				}
+			default:
+				fmt.Println("F")
 			}
-		default:
-			res += "F\n"
 		}
 	}
-	return res[:len(res)-1], nil
 }
 
-func HowManyWays(str string) (string, error) {
-	ss := strings.Split(str, "\n")
-
-	count := 0
-	for _, s := range ss {
-		if s == "0 0" {
-			break
-		}
-		ns := strings.Split(s, " ")
-		if len(ns) != 2 {
-			return "", errors.New("invalid number of integers")
-		}
-
-		n, err := strconv.Atoi(ns[0])
+func HowManyWays() {
+	var n int
+	var x int
+	for {
+		_, err := fmt.Scan(&n, &x)
 		if err != nil {
-			return "", err
+			fmt.Println(err)
+			return
+		}
+		if n == 0 && x == 0 {
+			return
 		}
 		if n < 3 || n > 100 {
-			return "", errors.New("invalid n")
-		}
-
-		x, err := strconv.Atoi(ns[1])
-		if err != nil {
-			return "", err
+			fmt.Println("invalid n range")
+			return
 		}
 		if x < 0 || x > 300 {
-			return "", errors.New("invalid x")
+			fmt.Println("invalid x range")
+			return
 		}
 
+		var c int
 		for i := 1; i <= n; i++ {
 			for j := i + 1; j <= n; j++ {
 				ij := i + j
@@ -101,155 +77,112 @@ func HowManyWays(str string) (string, error) {
 				}
 				for k := j + 1; k <= n; k++ {
 					if ij+k == x {
-						count++
+						c++
 					}
 				}
 			}
 		}
+		fmt.Println(c)
 	}
-	return strconv.Itoa(count), nil
 }
 
-func Spreadsheet(str string) (string, error) {
-	ss := strings.Split(str, "\n")
-	rc := strings.Split(ss[0], " ")
-	if len(rc) != 2 {
-		return "", errors.New("invalid row and column number")
-	}
-	r, err := strconv.Atoi(rc[0])
+func Spreadsheet() {
+	rc := make([]int, 2)
+	_, err := fmt.Scan(&rc[0], &rc[1])
 	if err != nil {
-		return "", err
+		fmt.Println(err)
+		return
 	}
-	if r < 1 || r > 100 {
-		return "", errors.New("invalid r")
-	}
-
-	c, err := strconv.Atoi(rc[1])
-	if err != nil {
-		return "", err
-	}
-	if c < 1 || c > 100 {
-		return "", errors.New("invalid c")
-	}
-
-	res := ""
-	cs := make([]int, 5)
-	for _, row := range ss[1:] {
-		els := strings.Split(row, " ")
-		if len(els) != c {
-			return "", errors.New("invalid columns number")
+	for i := range rc {
+		if rc[i] < 1 || rc[i] > 100 {
+			fmt.Println("invalid r or c range")
 		}
+	}
+
+	cs := make([]int, rc[1])
+	for i := 0; i < rc[0]; i++ {
+		var el int
 		var sum int
-		for j, el := range els {
-			i, err := strconv.Atoi(el)
+		for j := 0; j < rc[1]; j++ {
+			_, err := fmt.Scan(&el)
 			if err != nil {
-				return "", err
+				fmt.Println(err)
+				return
 			}
-			if i < 0 || i > 100 {
-				return "", errors.New("invalid element")
+			if el < 0 || el > 100 {
+				fmt.Println("invalid element range")
 			}
-			sum += i
-			cs[j] += i
+			sum += el
+			cs[j] += el
+			fmt.Print(el, " ")
 		}
-
-		res += row + " " + strconv.Itoa(sum) + "\n"
+		fmt.Println(sum)
 	}
-
 	var sum int
-	for _, c := range cs {
-		res += strconv.Itoa(c) + " "
-		sum += c
+	for i := range cs {
+		fmt.Print(cs[i], " ")
+		sum += cs[i]
 	}
-	return res + strconv.Itoa(sum), nil
+	fmt.Println(sum)
 }
 
-func MatrixMultiplication(str string) (string, error) {
-	ss := strings.Split(str, "\n")
-	nml := strings.Split(ss[0], " ")
-	if len(nml) != 3 {
-		return "", errors.New("invalid n m l")
-	}
-
-	n, err := strconv.Atoi(nml[0])
+func MatrixMultiplication() {
+	nml := make([]int, 3)
+	_, err := fmt.Scan(&nml[0], &nml[1], &nml[2])
 	if err != nil {
-		return "", err
+		fmt.Println(err)
+		return
 	}
-	if n < 1 || n > 100 {
-		return "", errors.New("invalid r")
-	}
-
-	m, err := strconv.Atoi(nml[1])
-	if err != nil {
-		return "", err
-	}
-	if m < 1 || m > 100 {
-		return "", errors.New("invalid m")
-	}
-
-	l, err := strconv.Atoi(nml[2])
-	if err != nil {
-		return "", err
-	}
-	if l < 1 || l > 100 {
-		return "", errors.New("invalid l")
-	}
-
-	if len(ss) != n+m+1 {
-		return "", errors.New("invalid input")
-	}
-
-	a := make([][]int, n)
-	for i := 0; i < n; i++ {
-		a[i] = make([]int, m)
-		els := strings.Split(ss[i+1], " ")
-		if len(els) != m {
-			return "", errors.New("invalid row a")
+	for i := range nml {
+		if nml[i] < 1 || nml[i] > 100 {
+			fmt.Println("invalid n or m or l range")
 		}
-		for j := 0; j < m; j++ {
-			a[i][j], err = strconv.Atoi(els[j])
+	}
+
+	a := make([][]int, nml[0])
+	for i := 0; i < nml[0]; i++ {
+		a[i] = make([]int, nml[1])
+		for j := 0; j < nml[1]; j++ {
+			_, err := fmt.Scan(&a[i][j])
 			if err != nil {
-				return "", err
+				fmt.Println(err)
+				return
+			}
+			if a[i][j] < 0 || a[i][j] > 10000 {
+				fmt.Println("invalid aij range")
+				return
 			}
 		}
 	}
-	b := make([][]int, m)
-	for i := 0; i < m; i++ {
-		b[i] = make([]int, l)
-		els := strings.Split(ss[i+n+1], " ")
-		if len(els) != l {
-			return "", errors.New("invalid row b")
-		}
-		for j := 0; j < l; j++ {
-			b[i][j], err = strconv.Atoi(els[j])
+	b := make([][]int, nml[1])
+	for i := 0; i < nml[1]; i++ {
+		b[i] = make([]int, nml[2])
+		for j := 0; j < nml[2]; j++ {
+			_, err := fmt.Scan(&b[i][j])
 			if err != nil {
-				return "", err
+				fmt.Println(err)
+				return
 			}
-		}
-
-	}
-
-	c := make([][]int, n)
-	for i := 0; i < n; i++ {
-		c[i] = make([]int, l)
-		for k := 0; k < m; k++ {
-			for j := 0; j < l; j++ {
-				c[i][j] += a[i][k] * b[k][j]
+			if b[i][j] < 0 || b[i][j] > 10000 {
+				fmt.Println("invalid bij range")
+				return
 			}
 		}
 	}
 
-	var res string
-	for i := 0; i < n; i++ {
-		for j := 0; j < l; j++ {
-			res += strconv.Itoa(c[i][j])
-			if j != l-1 {
-				res += " "
+	for i := 0; i < nml[0]; i++ {
+		cr := make([]int, nml[2])
+		for k := 0; k < nml[1]; k++ {
+			for j := 0; j < nml[2]; j++ {
+				cr[j] += a[i][k] * b[k][j]
 			}
 		}
-		if i != n-1 {
-			res += "\n"
+		for j := 0; j < nml[2]; j++ {
+			fmt.Print(cr[j])
+			if j != nml[2]-1 {
+				fmt.Print(" ")
+			}
 		}
+		fmt.Print("\n")
 	}
-
-	return res, nil
 }

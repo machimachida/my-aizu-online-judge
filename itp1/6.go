@@ -1,244 +1,188 @@
 package itp1
 
 import (
-	"errors"
-	"strconv"
-	"strings"
+	"fmt"
 )
 
-func ReversingNumbers(str string) (string, error) {
-	ss := strings.Split(str, "\n")
-	n, err := strconv.Atoi(ss[0])
+func ReversingNumbers() {
+	var n int
+	_, err := fmt.Scan(&n)
 	if err != nil {
-		return "", err
+		fmt.Println(err)
+		return
 	}
 	if n > 100 {
-		return "", errors.New("n is not match n <= 100. n = " + ss[0])
+		fmt.Println("invalid n range")
+		return
 	}
 
-	els := strings.Split(ss[1], " ")
-	if len(els) != n {
-		return "", errors.New("invalid input")
-	}
-
-	is := make([]int, n)
-	for i, el := range els {
-		a, err := strconv.Atoi(el)
+	an := make([]int, n)
+	for i := 0; i < n; i++ {
+		_, err := fmt.Scan(&an[i])
 		if err != nil {
-			return "", err
+			fmt.Println(err)
+			return
 		}
-		if a < 0 || a >= 1000 {
-			return "", errors.New("a is not match 0 <= a < 1000. a = " + el)
+		if an[i] < 0 || an[i] >= 1000 {
+			fmt.Println("invalid ai range")
+			return
 		}
-		is[i] = a
 	}
 
-	res := ""
 	for i := n - 1; i >= 0; i-- {
-		res += strconv.Itoa(is[i]) + " "
+		fmt.Print(an[i])
+		if i != 0 {
+			fmt.Print(" ")
+		}
 	}
-	return res[:len(res)-1], nil
+	fmt.Print("\n")
 }
 
-func FindingMissingCards(str string) (string, error) {
-	ss := strings.Split(str, "\n")
-	n, err := strconv.Atoi(ss[0])
+func FindingMissingCards() {
+	var n int
+	_, err := fmt.Scan(&n)
 	if err != nil {
-		return "", err
+		fmt.Println(err)
+		return
+	}
+	if n > 52 {
+		fmt.Println("invalid n range")
+		return
 	}
 
-	if len(ss)-1 != n {
-		return "", errors.New("invalid n. lines = " + strconv.Itoa(len(ss)) + " n = " + strconv.Itoa(n))
+	exs := make(map[string][]bool, 4)
+	suits := []string{"S", "H", "C", "D"}
+	for i := range suits {
+		exs[suits[i]] = make([]bool, 13)
 	}
 
-	exs := make([][]bool, 4)
-	for i := 0; i < 4; i++ {
-		exs[i] = make([]bool, 13)
-	}
-
-	for _, s := range ss[1:] {
-		els := strings.Split(s, " ")
-		if len(els) != 2 {
-			return "", errors.New("invalid input")
-		}
-
-		a, err := strconv.Atoi(els[1])
+	for i := 0; i < n; i++ {
+		var s string
+		var r int
+		_, err := fmt.Scan(&s, &r)
 		if err != nil {
-			return "", err
+			fmt.Println(err)
+			return
 		}
-		if a < 1 || a > 13 {
-			return "", errors.New("invalid rank")
+		if s != "S" && s != "H" && s != "C" && s != "D" {
+			fmt.Println("invalid suit")
+			return
 		}
-
-		switch els[0] {
-		case "S":
-			exs[0][a-1] = true
-		case "H":
-			exs[1][a-1] = true
-		case "C":
-			exs[2][a-1] = true
-		case "D":
-			exs[3][a-1] = true
-		default:
-			return "", errors.New("invalid suit")
+		if r < 1 || r > 13 {
+			fmt.Println("invalid rank")
+			return
 		}
+		exs[s][r-1] = true
 	}
-	res := ""
-	for i, ex := range exs {
-		var suit string
-		switch i {
-		case 0:
-			suit = "S "
-		case 1:
-			suit = "H "
-		case 2:
-			suit = "C "
-		case 3:
-			suit = "D "
-		}
-		for j, isExist := range ex {
-			if !isExist {
-				res += suit + strconv.Itoa(j+1) + "\n"
+
+	for _, s := range suits {
+		for i, b := range exs[s] {
+			if !b {
+				fmt.Printf("%s %d\n", s, i+1)
 			}
 		}
 	}
-	return res, nil
 }
 
-func OfficialHouse(str string) (string, error) {
-	ss := strings.Split(str, "\n")
-	n, err := strconv.Atoi(ss[0])
+func OfficialHouse() {
+	var n int
+	_, err := fmt.Scan(&n)
 	if err != nil {
-		return "", err
-	}
-
-	if len(ss)-1 != n {
-		return "", errors.New("invalid n. lines = " + strconv.Itoa(len(ss)) + " n = " + strconv.Itoa(n))
+		fmt.Println(err)
+		return
 	}
 
 	oh := make([][]int, 12)
 	for i := 0; i < 12; i++ {
 		oh[i] = make([]int, 10)
 	}
-
-	for _, s := range ss[1:] {
-		els := strings.Split(s, " ")
-		if len(els) != 4 {
-			return "", errors.New("invalid line")
-		}
-
-		b, err := strconv.Atoi(els[0])
+	var b int
+	var f int
+	var r int
+	var t int
+	for i := 0; i < n; i++ {
+		_, err := fmt.Scan(&b, &f, &r, &t)
 		if err != nil {
-			return "", err
+			fmt.Println(err)
+			return
 		}
 		if b < 1 || b > 4 {
-			return "", errors.New("incorrect building number: " + els[0])
-		}
-
-		f, err := strconv.Atoi(els[1])
-		if err != nil {
-			return "", err
+			fmt.Println("invalid building number")
+			return
 		}
 		if f < 1 || f > 3 {
-			return "", errors.New("incorrect floor number" + els[1])
-		}
-
-		r, err := strconv.Atoi(els[2])
-		if err != nil {
-			return "", err
+			fmt.Println("incorrect floor number")
+			return
 		}
 		if r < 1 || r > 10 {
-			return "", errors.New("incorrect room number" + els[2])
+			fmt.Println("incorrect room number")
+			return
 		}
-
-		v, err := strconv.Atoi(els[3])
-		if err != nil {
-			return "", err
-		}
-		if v < 0 || v > 9 {
-			return "", errors.New("the number of tenants is not match 0 <= v <= 9. v = " + els[2])
-		}
-
-		oh[(b-1)*3+(f-1)][r-1] += v
-	}
-
-	res := ""
-	l := len(oh)
-	for i, f := range oh {
-		for _, r := range f {
-			res += " " + strconv.Itoa(r)
-		}
-		res += "\n"
-		if i%3 == 2 && i != l-1 {
-			res += "####################\n"
+		bf := (b-1)*3 + f - 1
+		oh[bf][r-1] += t
+		if oh[bf][r-1] < 0 || oh[bf][r-1] > 9 {
+			fmt.Println("incorrect number of tenants")
+			return
 		}
 	}
 
-	return res[:len(res)-1], nil
+	for i := range oh {
+		for j := range oh[i] {
+			fmt.Print(" ", oh[i][j])
+		}
+		fmt.Print("\n")
+		if i%3 == 2 && i != len(oh)-1 {
+			fmt.Println("####################")
+		}
+	}
 }
 
-func MatrixVectorMultiplication(str string) (string, error) {
-	ss := strings.Split(str, "\n")
-	nms := strings.Split(ss[0], " ")
-	if len(nms) != 2 {
-		return "", errors.New("invalid number of integer in first line")
-	}
-
+func MatrixVectorMultiplication() {
 	nm := make([]int, 2)
-	for i, s := range nms {
-		n, err := strconv.Atoi(s)
-		if err != nil {
-			return "", err
-		}
-		if n < 1 || n > 100 {
-			return "", errors.New("invalid n or m")
-		}
-		nm[i] = n
+	_, err := fmt.Scan(&nm[0], &nm[1])
+	if err != nil {
+		fmt.Println(err)
+		return
 	}
-
-	if len(ss) != nm[0]+nm[1]+1 {
-		return "", errors.New("invalid number of lines")
+	for i := range nm {
+		if nm[i] < 1 || nm[i] > 100 {
+			fmt.Println("invalid n or m range")
+		}
 	}
 
 	a := make([][]int, nm[0])
 	for i := 0; i < nm[0]; i++ {
 		a[i] = make([]int, nm[1])
-		ns := strings.Split(ss[i+1], " ")
-		if len(ns) != nm[1] {
-			return "", errors.New("invalid number of integer")
-		}
-		for j, s := range ns {
-			n, err := strconv.Atoi(s)
+		for j := 0; j < nm[1]; j++ {
+			_, err := fmt.Scan(&a[i][j])
 			if err != nil {
-				return "", err
+				fmt.Println(err)
+				return
 			}
-			if n < 0 || n > 1000 {
-				return "", errors.New("invalid a")
+			if a[i][j] < 0 || a[i][j] > 1000 {
+				fmt.Println("invalid a range")
+				return
 			}
-
-			a[i][j] = n
 		}
 	}
 	b := make([]int, nm[1])
-	for i, s := range ss[nm[0]+1:] {
-		n, err := strconv.Atoi(s)
+	for i := 0; i < nm[1]; i++ {
+		_, err := fmt.Scan(&b[i])
 		if err != nil {
-			return "", err
+			fmt.Println(err)
+			return
 		}
-		if n < 0 || n > 1000 {
-			return "", errors.New("invalid b")
+		if b[i] < 0 || b[i] > 1000 {
+			fmt.Println("invalid b range")
+			return
 		}
-
-		b[i] = n
 	}
 
-	res := ""
 	for i := 0; i < nm[0]; i++ {
 		c := 0
 		for j := 0; j < nm[1]; j++ {
 			c += a[i][j] * b[j]
 		}
-		res += strconv.Itoa(c) + "\n"
+		fmt.Printf("%d\n", c)
 	}
-	return res[:len(res)-1], nil
 }

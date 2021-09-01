@@ -1,169 +1,122 @@
 package itp1
 
 import (
-	"errors"
-	"strconv"
+	"fmt"
 	"strings"
 )
 
-func PrintARectangle(str string) (string, error) {
-	ss := strings.Split(str, "\n")
-	res := ""
-	for _, s := range ss {
-		if s == "0 0" {
-			break
+func PrintARectangle() {
+	HW := make([]int, 2)
+	for {
+		_, err := fmt.Scan(&HW[0], &HW[1])
+		if err != nil {
+			fmt.Println(err)
+			return
 		}
-		els := strings.Split(s, " ")
-		if len(els) != 2 {
-			return "", errors.New("invalid input")
+		if HW[0] == 0 && HW[1] == 0 {
+			return
+		}
+		for i := range HW {
+			if HW[i] < 1 || HW[i] > 300 {
+				fmt.Println("invalid H or W range")
+				return
+			}
 		}
 
-		is := make([]int, 2)
-		for i, el := range els {
-			n, err := strconv.Atoi(el)
-			if err != nil {
-				return "", err
-			}
-			if n < 1 || n > 300 {
-				var v string
-				if i == 0 {
-					v = "H"
-				} else {
-					v = "W"
-				}
-				return "", errors.New(v + " is not match 1 <= " + v + " <= 300. " + v + " = " + el)
-			}
-			is[i] = n
+		for i := 0; i < HW[0]; i++ {
+			fmt.Println(strings.Repeat("#", HW[1]))
 		}
-
-		for i := 0; i < is[0]; i++ {
-			for j := 0; j < is[1]; j++ {
-				res += "#"
-			}
-			res += "\n"
-		}
-		res += "\n"
+		fmt.Print("\n")
 	}
-	return res, nil
 }
 
-func PrintAFrame(str string) (string, error) {
-	ss := strings.Split(str, "\n")
-	res := ""
-	for _, s := range ss {
-		if s == "0 0" {
-			break
+func PrintAFrame() {
+	HW := make([]int, 2)
+	for {
+		_, err := fmt.Scan(&HW[0], &HW[1])
+		if err != nil {
+			fmt.Println(err)
+			return
 		}
-		els := strings.Split(s, " ")
-		if len(els) != 2 {
-			return "", errors.New("invalid input")
+		if HW[0] == 0 && HW[1] == 0 {
+			return
+		}
+		for i := range HW {
+			if HW[i] < 3 || HW[i] > 300 {
+				fmt.Println("invalid H or W range")
+				return
+			}
 		}
 
-		is := make([]int, 2)
-		for i, el := range els {
-			n, err := strconv.Atoi(el)
-			if err != nil {
-				return "", err
+		for i := 0; i < HW[0]; i++ {
+			if i == 0 || i == HW[0]-1 {
+				fmt.Println(strings.Repeat("#", HW[1]))
+			} else {
+				fmt.Printf("#%s#\n", strings.Repeat(".", HW[1]-2))
 			}
-			if n < 3 || n > 300 {
-				var v string
-				if i == 0 {
-					v = "H"
-				} else {
-					v = "W"
-				}
-				return "", errors.New(v + " is not match 3 <= " + v + " <= 300. " + v + " = " + el)
-			}
-			is[i] = n
 		}
-
-		H := is[0] - 1
-		for i := 0; i < is[0]; i++ {
-			W := is[1] - 1
-			for j := 0; j < is[1]; j++ {
-				if i == 0 || i == H || j == 0 || j == W {
-					res += "#"
-				} else {
-					res += "."
-				}
-			}
-			res += "\n"
-		}
-		res += "\n"
+		fmt.Print("\n")
 	}
-	return res, nil
 }
 
-func PrintAChessboard(str string) (string, error) {
-	ss := strings.Split(str, "\n")
-	res := ""
-	for _, s := range ss {
-		if s == "0 0" {
-			break
+func PrintAChessboard() {
+	HW := make([]int, 2)
+	for {
+		_, err := fmt.Scan(&HW[0], &HW[1])
+		if err != nil {
+			fmt.Println(err)
+			return
 		}
-		els := strings.Split(s, " ")
-		if len(els) != 2 {
-			return "", errors.New("invalid input")
+		if HW[0] == 0 && HW[1] == 0 {
+			return
+		}
+		for i := range HW {
+			if HW[i] < 1 || HW[i] > 300 {
+				fmt.Println("invalid H or W range")
+				return
+			}
 		}
 
-		is := make([]int, 2)
-		for i, el := range els {
-			n, err := strconv.Atoi(el)
-			if err != nil {
-				return "", err
-			}
-			if n < 1 || n > 300 {
-				var v string
-				if i == 0 {
-					v = "H"
-				} else {
-					v = "W"
-				}
-				return "", errors.New(v + " is not match 1 <= " + v + " <= 300. " + v + " = " + el)
-			}
-			is[i] = n
-		}
-
-		for i := 0; i < is[0]; i++ {
+		for i := 0; i < HW[0]; i++ {
 			isHash := i%2 == 0
-			for j := 0; j < is[1]; j++ {
+			for j := 0; j < HW[1]; j++ {
 				if isHash {
-					res += "#"
+					fmt.Print("#")
 				} else {
-					res += "."
+					fmt.Print(".")
 				}
 				isHash = !isHash
 			}
-			res += "\n"
+			fmt.Print("\n")
 		}
-		res += "\n"
+		fmt.Print("\n")
 	}
-	return res, nil
 }
 
-func StructuredProgramming(str string) (string, error) {
-	n, err := strconv.Atoi(str)
+func StructuredProgramming() {
+	var n int
+	_, err := fmt.Scan(&n)
 	if err != nil {
-		return "", err
+		fmt.Println(err)
+		return
 	}
 	if n < 3 || n > 10000 {
-		return "", errors.New("n is not match 1 <= n <= 300. n = " + str)
+		fmt.Println("invalid n range")
 	}
 
-	res := ""
 	for i := 1; i <= n; i++ {
 		x := i
 		if x%3 == 0 {
-			res += " " + strconv.Itoa(i)
+			fmt.Printf(" %d", i)
 		} else {
 			for x != 0 {
 				if x%10 == 3 {
-					res += " " + strconv.Itoa(i)
+					fmt.Printf(" %d", i)
 					break
 				}
 				x = x / 10
 			}
 		}
 	}
-	return res, nil
+	fmt.Print("\n")
 }

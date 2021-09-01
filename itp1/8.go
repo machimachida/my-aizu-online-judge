@@ -1,14 +1,23 @@
 package itp1
 
 import (
-	"errors"
+	"bufio"
+	"fmt"
+	"os"
 	"strconv"
 	"strings"
 )
 
-func TogglingCases(str string) (string, error) {
+func TogglingCases() { // TODO AOJの動作環境が古いため、strings.Builderが使えない
+	scanner := bufio.NewScanner(os.Stdin)
+	if !scanner.Scan() {
+		fmt.Println("invalid input")
+		return
+	}
+	str := scanner.Text()
 	if len(str) >= 1200 {
-		return "", errors.New("invalid length of the input string")
+		fmt.Println("invalid length of the input string")
+		return
 	}
 
 	var b strings.Builder
@@ -21,79 +30,84 @@ func TogglingCases(str string) (string, error) {
 		}
 		b.WriteRune(c)
 	}
-
-	return b.String(), nil
+	fmt.Println(b.String())
 }
 
-func SumOfNumbers(str string) (string, error) {
-	lines := strings.Split(str, "\n")
-	res := ""
-	for _, line := range lines {
+func SumOfNumbers() {
+	var line string
+	for i := 0; i < 1000; i++ {
+		_, err := fmt.Scan(&line)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
 		if line == "0" {
 			break
 		}
 
-		sum := 0
-		for _, c := range line {
-			n, err := strconv.Atoi(string(c))
+		var sum int
+		for i := range line {
+			n, err := strconv.Atoi(string(line[i]))
 			if err != nil {
-				return "", err
+				fmt.Println(err)
+				return
 			}
 			sum += n
-			if sum > 1000 {
-				return "", errors.New("the nunber of digits in each line number does not exceed 1000")
-			}
 		}
-		res += strconv.Itoa(sum) + "\n"
+		fmt.Println(sum)
 	}
-	return res[:len(res)-1], nil
 }
 
-func CountingCharacters(str string) (string, error) {
-	if len(str) > 1200 {
-		return "", errors.New("invalid input length")
-	}
+func CountingCharacters() {
+	scanner := bufio.NewScanner(os.Stdin)
 	n := make(map[rune]int, 26)
-	for _, c := range str {
-		if c >= 'A' && c <= 'Z' {
-			c += 'a' - 'A'
+	for scanner.Scan() {
+		str := scanner.Text()
+		if len(str) >= 1200 {
+			fmt.Println("invalid length of the input string")
+			return
 		}
-		n[c]++
+
+		for _, c := range str {
+			if c >= 'A' && c <= 'Z' {
+				c += 'a' - 'A'
+			}
+			n[c]++
+		}
 	}
-	var res string
 	for c := 'a'; c <= 'z'; c++ {
-		res += string(c) + " : " + strconv.Itoa(n[c]) + "\n"
+		fmt.Println(string(c), ":", n[c])
 	}
-	return res[:len(res)-1], nil
 }
 
-func Ring(str string) (string, error) {
-	inputs := strings.Split(str, "\n")
-	if len(inputs) != 2 {
-		return "", errors.New("invalid input")
+func Ring() {
+	sp := make([]string, 2)
+	_, err := fmt.Scan(&sp[0], &sp[1])
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	sl := len(sp[0])
+	pl := len(sp[1])
+	if pl == 0 || pl > sl || pl > 100 || sl > 100 {
+		fmt.Println("invalid p or s length")
+		return
 	}
 
-	s := inputs[0]
-	sl := len(s)
-	p := inputs[1]
-	pl := len(p)
-	if pl == 0 || p > s || pl > 100 || sl > 100 {
-		return "", errors.New("invalid p or s length")
-	}
-
-	for i := range s {
-		for j, c := range p {
+	for i := range sp[0] {
+		for j, c := range sp[1] {
 			index := i + j
 			if i+j >= sl {
 				index -= sl
 			}
-			if c != rune(s[index]) {
+			if c != rune(sp[0][index]) {
 				break
 			}
 			if j == pl-1 {
-				return "Yes", nil
+				fmt.Println("Yes")
+				return
 			}
 		}
 	}
-	return "No", nil
+	fmt.Println("No")
 }
