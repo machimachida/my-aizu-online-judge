@@ -137,10 +137,8 @@ func PrimeNumbers() {
 
 func MaximumProfit() {
 	sc := bufio.NewScanner(os.Stdin)
-	sc.Split(bufio.ScanWords)
 
 	sc.Scan()
-	var n int
 	n, err := strconv.Atoi(sc.Text())
 	if err != nil {
 		fmt.Println(err)
