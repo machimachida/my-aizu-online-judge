@@ -1,14 +1,11 @@
-# my-aizu-online-judge
-
-I challenge AIZU ONLINE JUDGE problem in Go.
-I write answers and testing codes.
+# practice-go
 
 ## commands
 
 ### test
 
 ```
-go test -v aizu/{package_name} -run {function_name}
+go test -v practice-go/{package_name} -run {function_name}
 ```
 
 ### benchmark
@@ -17,4 +14,10 @@ go test -v aizu/{package_name} -run {function_name}
 
 ```
 go test -bench {regexp} -benchmem {directory_path} -benchtime 000x
+```
+
+### module名変更
+
+```
+go mod edit -module practice-go
 ```

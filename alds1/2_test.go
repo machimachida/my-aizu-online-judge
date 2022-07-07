@@ -1,8 +1,8 @@
 package alds1
 
 import (
-	"aizu/support"
 	"fmt"
+	"practice-go/support"
 )
 
 func ExampleBubbleSort() {

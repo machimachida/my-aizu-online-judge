@@ -1,14 +1,15 @@
 package itp1
 
 import (
-	"aizu/support"
 	"fmt"
+	"practice-go/support"
 )
 
-func ExamplePrintManyHelloWorld() {
-	PrintManyHelloWorld() // TODO: write test code
-	// Output: Hello World
-}
+// TODO: write test code
+//func ExamplePrintManyHelloWorld() {
+//	PrintManyHelloWorld()
+//	// Output: Hello World
+//}
 
 func ExamplePrintTestCases() {
 	err := support.Stdin(PrintTestCases, "3\n5\n11\n7\n8\n19\n0")

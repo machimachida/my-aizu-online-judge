@@ -1,8 +1,8 @@
 package itp1
 
 import (
-	"aizu/support"
 	"fmt"
+	"practice-go/support"
 )
 
 func ExampleHelloWorld() {
