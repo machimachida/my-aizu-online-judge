@@ -2,7 +2,7 @@ package framework
 
 type Product interface {
 	Use(s string)
-	createClone() Product
+	CreateClone() Product
 }
 
 type Manager struct {
@@ -19,5 +19,5 @@ func (m Manager) Register(name string, proto Product) {
 
 func (m Manager) Create(protoname string) Product {
 	var p Product = m.showcase[protoname]
-	return p.createClone()
+	return p.CreateClone()
 }

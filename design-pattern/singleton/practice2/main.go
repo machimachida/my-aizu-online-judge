@@ -4,13 +4,13 @@ import (
 	"fmt"
 )
 
-type Triple struct {
+type TriplesElement struct {
 	id int
 }
 
-var triple = []*Triple{{id: 0}, {id: 1}, {id: 2}}
+var triple = []*TriplesElement{{id: 0}, {id: 1}, {id: 2}}
 
-func GetInstance(id int) *Triple {
+func GetInstance(id int) *TriplesElement {
 	return triple[id]
 }
 
