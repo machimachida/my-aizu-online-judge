@@ -21,3 +21,9 @@ go test -bench {regexp} -benchmem {directory_path} -benchtime 000x
 ```
 go mod edit -module practice-go
 ```
+
+### go.modのバージョンアップ
+
+```
+go mod tidy -go="version"
+```
