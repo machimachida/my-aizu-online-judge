@@ -1,9 +1,9 @@
-package main
+package factory
 
 import (
 	"fmt"
 	"os"
-	"reflect"
+	iterator "practice-go/design-pattern/abstract-factory/Iterator"
 )
 
 type ItemInterface interface {
@@ -12,56 +12,94 @@ type ItemInterface interface {
 
 type Item struct {
 	ItemInterface
-	caption string
+	Caption string
 }
 
 func NewItem(caption string) Item {
-	return Item{caption: caption}
+	return Item{Caption: caption}
+}
+
+type LinkInterface interface {
+	ItemInterface
 }
 
 type Link struct {
+	LinkInterface
 	Item
-	url string
+	URL string
 }
 
 func NewLink(caption, url string) Link {
-	return Link{Item: NewItem(caption), url: url}
+	return Link{Item: NewItem(caption), URL: url}
+}
+
+type TrayInterface interface {
+	ItemInterface
+	iterator.Iterator
+	Add(item ItemInterface)
 }
 
 type Tray struct {
+	TrayInterface
 	Item
-	tray []Item
+	tray []ItemInterface
 }
 
 func NewTray(caption string) Tray {
-	return Tray{Item: NewItem(caption), tray: make([]Item, 0)}
+	return Tray{Item: NewItem(caption), tray: make([]ItemInterface, 0)}
 }
 
-func (t *Tray) Add(item Item) {
+func (t *Tray) Add(item ItemInterface) {
 	t.tray = append(t.tray, item)
+}
+
+func (t Tray) Iterator() iterator.Iterator {
+	return NewTrayIterator(t)
+}
+
+type TrayIterator struct {
+	iterator.Iterator
+	tray  *Tray
+	index int
+}
+
+func NewTrayIterator(t Tray) *TrayIterator {
+	return &TrayIterator{tray: &t, index: 0}
+}
+
+func (ti TrayIterator) HasNext() bool {
+	return ti.index < len(ti.tray.tray)
+}
+
+func (ti *TrayIterator) Next() any {
+	tray := ti.tray.tray[ti.index]
+	ti.index++
+	return tray
 }
 
 type PageInterface interface {
 	MakeHTML() string
+	Add(item ItemInterface)
+	Output()
 }
 
 type Page struct {
 	PageInterface
-	title   string
-	author  string
-	content []Item
+	Title   string
+	Author  string
+	content []ItemInterface
 }
 
 func NewPage(title, author string) Page {
-	return Page{title: title, author: author}
+	return Page{Title: title, Author: author, content: make([]ItemInterface, 0)}
 }
 
-func (p *Page) Add(item Item) {
+func (p *Page) Add(item ItemInterface) {
 	p.content = append(p.content, item)
 }
 
 func (p Page) Output() {
-	filename := p.title + ".html"
+	filename := p.Title + ".html"
 	writer, err := os.OpenFile(filename, os.O_CREATE|os.O_WRONLY, 0666)
 	if err != nil {
 		panic(err)
@@ -71,52 +109,32 @@ func (p Page) Output() {
 	fmt.Println(filename + "を作成しました。")
 }
 
-type FactoryInterface interface {
-	CreateLink(caption, url string) Link
-	CreateTray(caption string) Tray
-	CreatePage(title, author string) Page
+func (p Page) Iterator() iterator.Iterator {
+	return NewPageIterator(p)
 }
 
-type Factory struct {
-	FactoryInterface
+type PageIterator struct {
+	iterator.Iterator
+	page  *Page
+	index int
 }
 
-func GetFactory(structType reflect.Type) Factory {
-	elem := reflect.New(structType).Elem()
-	if !elem.CanInterface() {
-		panic(fmt.Sprintf("failed to reflect.Value.CanInterface: %v\n", elem))
-	}
-
-	factory, ok := elem.Interface().(Factory)
-	if !ok {
-		panic(fmt.Sprintf("failed to cast Factory: %v\n", elem))
-	}
-	return factory
+func NewPageIterator(p Page) *PageIterator {
+	return &PageIterator{page: &p, index: 0}
 }
 
-func main() {
-	a := reflect.New(reflect.TypeOf(Item{}))
-	fmt.Println(a, a.IsNil())
-	b := a.Interface()
-	b1, ok := b.(Item)
-	fmt.Println(b1, ok)
+func (pi PageIterator) HasNext() bool {
+	return pi.index < len(pi.page.content)
+}
 
-	b2, ok := b.(*Item)
-	fmt.Println(b2, ok)
+func (pi *PageIterator) Next() any {
+	page := pi.page.content[pi.index]
+	pi.index++
+	return page
+}
 
-	if a.CanAddr() {
-		c := a.Addr().Interface()
-		c1, ok := c.(Item)
-		fmt.Println(c1, ok)
-
-		c2, ok := c.(*Item)
-		fmt.Println(c2, ok)
-	}
-
-	d := a.Elem().Interface()
-	d1, ok := d.(Item)
-	fmt.Println(d1, ok)
-
-	d2, ok := d.(*Item)
-	fmt.Println(d2, ok)
+type Factory interface {
+	CreateLink(caption, url string) LinkInterface
+	CreateTray(caption string) TrayInterface
+	CreatePage(title, author string) PageInterface
 }
